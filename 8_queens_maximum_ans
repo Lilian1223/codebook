@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int chessboard[10][10],sum;
+int place[10]={0};
+
+bool conflict(int col,int row){
+    for(int i=1;i<col;i++){
+        if(place[i]==row){
+            return true;
+        }
+        if((abs(col-i))==(abs(place[i]-row))){
+            return true;
+        }
+    }
+    return false;
+}
+
+void dfs(int col){
+    if(col==9){
+        int total=0;
+        for(int i=1;i<=8;i++){
+            total+=chessboard[i][place[i]];
+        }
+        if(total>sum){
+            sum=total;
+        }
+        return;
+    }
+
+    for(int row=1;row<=8;row++){
+        if(!conflict(col,row)){
+            place[col]=row;
+            dfs(col+1);
+        }
+    }
+}
+
+int main(){
+    int t=1;
+    scanf("%d",&t);
+    while(t--){
+        sum=0;
+        for(int i=1;i<=8;i++){
+            for(int j=1;j<=8;j++){
+                scanf("%d",&chessboard[i][j]);
+            }
+        }
+        dfs(1);
+        printf("%d\n",sum);
+    }
+    return 0;
+}
